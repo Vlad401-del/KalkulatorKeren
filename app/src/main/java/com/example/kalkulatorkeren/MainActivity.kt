@@ -39,6 +39,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable //function untuk button
+fun CalculatorButton(text: String, modifier: Modifier = Modifier){ //dengan paramater menerima teks dan modifier (opsional)
+    Button(
+        onClick = {/**/},
+        modifier = modifier.height(80.dp) // tinggi tombol
+    ){
+        Text(text = text, fontSize = 24.sp)
+    }
+}
+
 @Composable
 fun CalculatorApp() {
 // code
@@ -58,13 +68,12 @@ fun CalculatorApp() {
         //row 1
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
         {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
-            Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("7")}
-            Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("8")}
-            Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("9")}
-            Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("/")}
+            CalculatorButton(text = "7", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "8", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "9", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "0", modifier = Modifier.weight(1f))
         }
 
-        // tombol lainnya
     }
 }
 
