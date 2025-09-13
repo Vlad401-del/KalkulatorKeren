@@ -71,9 +71,35 @@ fun CalculatorApp() {
             CalculatorButton(text = "7", modifier = Modifier.weight(1f))
             CalculatorButton(text = "8", modifier = Modifier.weight(1f))
             CalculatorButton(text = "9", modifier = Modifier.weight(1f))
-            CalculatorButton(text = "0", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "/", modifier = Modifier.weight(1f))
         }
 
+        //row 2
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
+            CalculatorButton(text = "4", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "5", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "6", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "*", modifier = Modifier.weight(1f))
+        }
+
+        //row 3
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
+            CalculatorButton(text = "1", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "2", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "3", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "-", modifier = Modifier.weight(1f))
+        }
+
+        //row 4
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
+            CalculatorButton(text = "0", modifier = Modifier.weight(1f))
+            CalculatorButton(text = ".", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "=", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "+", modifier = Modifier.weight(1f))
+        }
     }
 }
 
