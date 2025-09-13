@@ -15,7 +15,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.kalkulatorkeren.ui.theme.KalkulatorKerenTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,19 +42,29 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CalculatorApp() {
 // code
-    Column(modifier = Modifier.fillMaxSize()) {
+
+    val buttonSpacing = 8.dp
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) { //padding
+
         //layar tampilan menggunakan teks
         Text(
             text = "0",
-            modifier = Modifier.padding(16.dp)
+            fontSize = 48.sp,
+            textAlign = TextAlign.End,
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
         )
 
-        Row(modifier = Modifier.fillMaxWidth()){  //fillmaxwidth mengisi lebar layar
+        //row 1
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
             Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("7")}
             Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("8")}
             Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("9")}
             Button(onClick = {/*later*/}, modifier = Modifier.padding(4.dp)) {Text("/")}
         }
+
+        // tombol lainnya
     }
 }
 
