@@ -100,6 +100,13 @@ fun CalculatorApp() {
             CalculatorButton(text = "=", modifier = Modifier.weight(1f))
             CalculatorButton(text = "+", modifier = Modifier.weight(1f))
         }
+
+        //row C dan del
+        Row(modifier = Modifier.fillMaxWidth().padding(top = buttonSpacing), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
+            CalculatorButton(text = "C", modifier = Modifier.weight(1f))
+            CalculatorButton(text = "DEL", modifier = Modifier.weight(1f))
+        }
     }
 }
 
