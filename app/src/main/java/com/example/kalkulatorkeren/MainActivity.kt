@@ -20,8 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.* // all API dari package composer.runtime
 import org.mariuszgromada.math.mxparser.Expression // import parser
+import androidx.compose.foundation.shape.CircleShape // import lingkaran
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.kalkulatorkeren.ui.theme.Gray
 import com.example.kalkulatorkeren.ui.theme.KalkulatorKerenTheme
+import com.example.kalkulatorkeren.ui.theme.LightGray
+import com.example.kalkulatorkeren.ui.theme.Orange
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +50,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable //function untuk button
 fun CalculatorButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit){ //dengan paramater menerima teks dan modifier (opsional)
+    val (containerColor, contentColor) = when (text) {
+        "+", "-", "*", "/" -> Gray to Orange
+        "C", "DEL" -> LightGray to Color.Black
+        "=" -> Orange to Color.White
+        else -> Gray to Color.White
+    }
+
     Button(
         onClick = onClick, //meneruskan paramater ke komponen Button
-        modifier = modifier.height(80.dp) // tinggi tombol
+        shape = CircleShape, // bentuk lingkaran
+        modifier = modifier.aspectRatio(1f), // ukuran simetris 1:1
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        )
     ){
-        Text(text = text, fontSize = 24.sp)
+        Text(text = text, fontSize = 28.sp, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -98,7 +117,11 @@ fun CalculatorApp() {
 
     val buttonSpacing = 8.dp
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) { //padding
+    Column(
+        modifier = Modifier.
+        fillMaxSize().padding(16.dp)
+        ,verticalArrangement = Arrangement.Bottom //semua item ditempatkan di bawah column
+        ) { //padding
 
         //layar tampilan menggunakan teks
         Text(
