@@ -57,6 +57,12 @@ fun CalculatorButton(text: String, modifier: Modifier = Modifier, onClick: () ->
         else -> Gray to Color.White
     }
 
+    // logika font size
+    val fontSize = when (text) {
+        "DEL" -> 24.sp //supaya tidak keluar dari lingkaran
+        else -> 32.sp
+    }
+
     Button(
         onClick = onClick, //meneruskan paramater ke komponen Button
         shape = CircleShape, // bentuk lingkaran
@@ -66,7 +72,7 @@ fun CalculatorButton(text: String, modifier: Modifier = Modifier, onClick: () ->
             contentColor = contentColor
         )
     ){
-        Text(text = text, fontSize = 32.sp)
+        Text(text = text, fontSize = fontSize)
     }
 }
 
