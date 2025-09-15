@@ -61,10 +61,38 @@ fun CalculatorApp() {
     var displayText by remember { mutableStateOf("0") } // memori
 
     fun onButtonClick(buttontext: String) {
-        if (displayText == "0") {
-            displayText = buttontext
-        } else {
-            displayText += buttontext
+        when (buttontext) {
+            "C" -> {
+                displayText = "0"
+            }
+            "DEL" -> {
+                if (displayText.length > 1) {
+                    displayText = displayText.dropLast(1) //drop last menghapus 1 karakter paling belakang dari String
+                } else {
+                    displayText = "0"
+                }
+            }
+            "=" -> {
+                try {
+                    val expression = Expression(displayText)
+                    val result = expression.calculate()
+
+                    if (!result.isNaN()) {
+                        displayText = result.toString()
+                    } else {
+                        displayText = "Error" //persamaan yang tidak valid
+                    }
+                } catch (e: Exception) {
+                    displayText = "Error"
+                }
+            }
+            else -> {
+                if (displayText == "0") {
+                    displayText = buttontext
+                } else {
+                    displayText += buttontext
+                }
+            }
         }
     }
 
@@ -124,4 +152,3 @@ fun CalculatorApp() {
         }
     }
 }
-
