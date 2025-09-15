@@ -29,6 +29,10 @@ import com.example.kalkulatorkeren.ui.theme.Gray
 import com.example.kalkulatorkeren.ui.theme.KalkulatorKerenTheme
 import com.example.kalkulatorkeren.ui.theme.LightGray
 import com.example.kalkulatorkeren.ui.theme.Orange
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.foundation.focusable
+import androidx.compose.ui.input.key.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +89,10 @@ fun CalculatorApp() {
     // remember supaya tidak hilang
     var displayText by remember { mutableStateOf("0") } // memori
 
+    // FocusRequester mengatur atau meminta fokus pada composable misal TextField
+    // dibungkus dengan remember supaya objek tidak dibuat ulang saat recompose.
+    val focusRequester = remember {FocusRequester()}
+
     fun onButtonClick(buttontext: String) {
         when (buttontext) {
             "C" -> {
@@ -126,7 +134,34 @@ fun CalculatorApp() {
     Column(
         modifier = Modifier.
         fillMaxSize().padding(horizontal = 16.dp, vertical = 32.dp)
-        ,verticalArrangement = Arrangement.Bottom //semua item ditempatkan di bawah column
+            .focusRequester(focusRequester) //menghubungkan focusRequester
+            .focusable() // membuat column ini bisa difokus
+            .onKeyEvent { event -> //memasang pendengar keyboard
+                if (event.type == KeyEventType.KeyDown) {
+                    when (event.key) {
+                        Key.One, Key.NumPad1 -> onButtonClick("1")
+                        Key.Two, Key.NumPad2 -> onButtonClick("2")
+                        Key.Three, Key.NumPad3 -> onButtonClick("3")
+                        Key.Four, Key.NumPad4 -> onButtonClick("4")
+                        Key.Five, Key.NumPad5 -> onButtonClick("5")
+                        Key.Six, Key.NumPad6 -> onButtonClick("6")
+                        Key.Seven, Key.NumPad7 -> onButtonClick("7")
+                        Key.Eight, Key.NumPad8 -> onButtonClick("8")
+                        Key.Nine, Key.NumPad9 -> onButtonClick("9")
+                        Key.Zero, Key.NumPad0 -> onButtonClick("0")
+                        Key.Period, Key.NumPadDot -> onButtonClick(".")
+                        Key.Plus, Key.NumPadAdd -> onButtonClick("+")
+                        Key.Minus, Key.NumPadSubtract -> onButtonClick("-")
+                        Key.Multiply, Key.NumPadMultiply -> onButtonClick("x")
+                        Key.Slash, Key.NumPadDivide -> onButtonClick("/")
+                        Key.Enter, Key.NumPadEnter -> onButtonClick("=")
+                        Key.Backspace -> onButtonClick("DEL")
+                        Key.C -> onButtonClick("C")
+                    }
+                    return@onKeyEvent true // sistem tau sudah menangani event ini
+                }
+                return@onKeyEvent false //sistem menangani event lain seperti keyUp
+            }, verticalArrangement = Arrangement.Bottom //semua item ditempatkan di bawah column
         ) { //padding
 
         //layar tampilan menggunakan teks
@@ -175,7 +210,7 @@ fun CalculatorApp() {
             CalculatorButton(text = "+", modifier = Modifier.weight(1f), onClick = {onButtonClick("+")})
         }
 
-        //row C dan del
+        //row bawahh
         Row(modifier = Modifier.fillMaxWidth().padding(top = buttonSpacing), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
         {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
             CalculatorButton(text = "0", modifier = Modifier.weight(2f), onClick = {onButtonClick("0")})
@@ -183,5 +218,9 @@ fun CalculatorApp() {
             CalculatorButton(text = "=", modifier = Modifier.weight(1f), onClick = {onButtonClick("=")})
 
         }
+    }
+    // saat composable pertama kali ditampilkan, otomatis beri fokus ke komponen terkait
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
     }
 }
