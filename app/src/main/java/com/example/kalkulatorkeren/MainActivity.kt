@@ -51,8 +51,8 @@ class MainActivity : ComponentActivity() {
 @Composable //function untuk button
 fun CalculatorButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit){ //dengan paramater menerima teks dan modifier (opsional)
     val (containerColor, contentColor) = when (text) {
-        "+", "-", "*", "/" -> Gray to Orange
-        "C", "DEL" -> LightGray to Color.Black
+        "+", "-", "x", "/" -> Orange to Color.White
+        "C", "DEL", "%" -> LightGray to Color.Black
         "=" -> Orange to Color.White
         else -> Gray to Color.White
     }
@@ -60,13 +60,13 @@ fun CalculatorButton(text: String, modifier: Modifier = Modifier, onClick: () ->
     Button(
         onClick = onClick, //meneruskan paramater ke komponen Button
         shape = CircleShape, // bentuk lingkaran
-        modifier = modifier.aspectRatio(1f), // ukuran simetris 1:1
+        modifier = modifier.height(90.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColor
         )
     ){
-        Text(text = text, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text(text = text, fontSize = 32.sp)
     }
 }
 
@@ -93,7 +93,7 @@ fun CalculatorApp() {
             }
             "=" -> {
                 try {
-                    val expression = Expression(displayText)
+                    val expression = Expression(displayText.replace("x", "*")) //parser membaca x menjadi *
                     val result = expression.calculate()
 
                     if (!result.isNaN()) {
@@ -119,59 +119,63 @@ fun CalculatorApp() {
 
     Column(
         modifier = Modifier.
-        fillMaxSize().padding(16.dp)
+        fillMaxSize().padding(horizontal = 16.dp, vertical = 32.dp)
         ,verticalArrangement = Arrangement.Bottom //semua item ditempatkan di bawah column
         ) { //padding
 
         //layar tampilan menggunakan teks
         Text(
             text = displayText, //menampilkan nilai dari displayText
-            fontSize = 48.sp,
+            fontSize = 72.sp,
+            fontWeight = FontWeight.Light,
             textAlign = TextAlign.End,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            maxLines = 1
         )
 
         //row 1
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
         {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
-            CalculatorButton(text = "7", modifier = Modifier.weight(1f), onClick = {onButtonClick("7")})
-            CalculatorButton(text = "8", modifier = Modifier.weight(1f), onClick = {onButtonClick("8")})
-            CalculatorButton(text = "9", modifier = Modifier.weight(1f), onClick = {onButtonClick("9")})
+            CalculatorButton(text = "C", modifier = Modifier.weight(2f), onClick = {onButtonClick("C")})
+            CalculatorButton(text = "DEL", modifier = Modifier.weight(1f), onClick = {onButtonClick("DEL")})
+//          CalculatorButton(text = "%", modifier = Modifier.weight(1f), onClick = {onButtonClick("%")}) //belum dipakai
             CalculatorButton(text = "/", modifier = Modifier.weight(1f), onClick = {onButtonClick("/")})
         }
 
         //row 2
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        Row(modifier = Modifier.fillMaxWidth().padding(top = buttonSpacing), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
+            CalculatorButton(text = "7", modifier = Modifier.weight(1f), onClick = {onButtonClick("7")})
+            CalculatorButton(text = "8", modifier = Modifier.weight(1f), onClick = {onButtonClick("8")})
+            CalculatorButton(text = "9", modifier = Modifier.weight(1f), onClick = {onButtonClick("9")})
+            CalculatorButton(text = "x", modifier = Modifier.weight(1f), onClick = {onButtonClick("x")})
+        }
+
+        //row 3
+        Row(modifier = Modifier.fillMaxWidth().padding(top = buttonSpacing), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
         {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
             CalculatorButton(text = "4", modifier = Modifier.weight(1f), onClick = {onButtonClick("4")})
             CalculatorButton(text = "5", modifier = Modifier.weight(1f), onClick = {onButtonClick("5")})
             CalculatorButton(text = "6", modifier = Modifier.weight(1f), onClick = {onButtonClick("6")})
-            CalculatorButton(text = "*", modifier = Modifier.weight(1f), onClick = {onButtonClick("*")})
-        }
-
-        //row 3
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
-        {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
-            CalculatorButton(text = "1", modifier = Modifier.weight(1f), onClick = {onButtonClick("1")})
-            CalculatorButton(text = "2", modifier = Modifier.weight(1f), onClick = {onButtonClick("2")})
-            CalculatorButton(text = "3", modifier = Modifier.weight(1f), onClick = {onButtonClick("3")})
             CalculatorButton(text = "-", modifier = Modifier.weight(1f), onClick = {onButtonClick("-")})
         }
 
         //row 4
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
+        Row(modifier = Modifier.fillMaxWidth().padding(top = buttonSpacing), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
         {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
-            CalculatorButton(text = "0", modifier = Modifier.weight(1f), onClick = {onButtonClick("0")})
-            CalculatorButton(text = ".", modifier = Modifier.weight(1f), onClick = {onButtonClick(".")})
-            CalculatorButton(text = "=", modifier = Modifier.weight(1f), onClick = {onButtonClick("=")})
+            CalculatorButton(text = "1", modifier = Modifier.weight(1f), onClick = {onButtonClick("1")})
+            CalculatorButton(text = "2", modifier = Modifier.weight(1f), onClick = {onButtonClick("2")})
+            CalculatorButton(text = "3", modifier = Modifier.weight(1f), onClick = {onButtonClick("3")})
             CalculatorButton(text = "+", modifier = Modifier.weight(1f), onClick = {onButtonClick("+")})
         }
 
         //row C dan del
         Row(modifier = Modifier.fillMaxWidth().padding(top = buttonSpacing), horizontalArrangement = Arrangement.spacedBy(buttonSpacing))
         {  //fillmaxwidth mengisi lebar layar, arrangement spacedby memberi jarak tetap di antara komponen row
-            CalculatorButton(text = "C", modifier = Modifier.weight(1f), onClick = {onButtonClick("C")})
-            CalculatorButton(text = "DEL", modifier = Modifier.weight(1f), onClick = {onButtonClick("DEL")})
+            CalculatorButton(text = "0", modifier = Modifier.weight(2f), onClick = {onButtonClick("0")})
+            CalculatorButton(text = ".", modifier = Modifier.weight(1f), onClick = {onButtonClick(".")})
+            CalculatorButton(text = "=", modifier = Modifier.weight(1f), onClick = {onButtonClick("=")})
+
         }
     }
 }
